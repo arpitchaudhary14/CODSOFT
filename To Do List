@@ -1,0 +1,64 @@
+class ToDoList:
+    def __init__(self):
+        self.tasks = []
+
+    def add_task(self):
+        task_name = input("Enter task name: ")
+        task = {'task': task_name, 'completed': False}
+        self.tasks.append(task)
+        print("Task added successfully!")
+
+    def view_tasks(self):
+        if len(self.tasks) == 0:
+            print("No tasks yet.")
+        else:
+            print("Your Tasks:")
+            for i in range(len(self.tasks)):
+                print(f"{i+1}. {self.tasks[i]['task']}")
+
+    def mark_completed(self):
+        self.view_tasks()
+        try:
+            index = int(input("Enter task number to mark as completed: ")) - 1
+            if 0 <= index < len(self.tasks):
+                self.tasks[index]['completed'] = True
+                print("Task marked as completed!")
+            else:
+                print("Invalid task number.")
+        except ValueError:
+            print("Please enter a valid number.")
+
+    def delete_task(self):
+        self.view_tasks()
+        try:
+            index = int(input("Enter task number to delete: ")) - 1
+            if 0 <= index < len(self.tasks):
+                removed = self.tasks.pop(index)
+                print(f"Removed task: {removed['task']}")
+            else:
+                print("Invalid task number.")
+        except ValueError:
+            print("Please enter a valid number.")
+app = ToDoList()
+while True:
+    print("\n=== TO DO LIST ===")
+    print("1. Add Task")
+    print("2. View Tasks")
+    print("3. Mark Completed")
+    print("4. Delete Task")
+    print("5. Exit")
+
+    choice = input("Enter your choice: ")
+    if choice == '1':
+        app.add_task()
+    elif choice == '2':
+        app.view_tasks()
+    elif choice == '3':
+        app.mark_completed()
+    elif choice == '4':
+        app.delete_task()
+    elif choice == '5':
+        print("Goodbye!")
+        break
+    else:
+        print("Invalid choice. Try again.")
