@@ -1,0 +1,76 @@
+import pandas as pd
+
+file = "contacts.csv"
+
+def load():
+    try:
+        return pd.read_csv(file)
+    except:
+        return pd.DataFrame(columns=["Name", "Phone", "Email", "Address"])
+
+def save(data):
+    data.to_csv(file, index=False)
+
+def reset():
+    df = pd.DataFrame(columns=["Name", "Phone", "Email", "Address"])
+    save(df)
+
+def add():
+    df = load()
+    name = input("Name: ")
+    phone = input("Phone: ")
+    email = input("Email: ")
+    address = input("Address: ")
+    df.loc[len(df)] = [name, phone, email, address]
+    save(df)
+    print("Contact Added")
+
+def view():
+    df = load()
+    if df.empty:
+        print("No contacts found")
+    else:
+        print(df)
+
+def search():
+    df = load()
+    keyword = input("Enter Name or Phone: ")
+    result = df[(df["Name"] == keyword) | (df["Phone"].astype(str) == keyword)]
+    if result.empty:
+        print("Not found")
+    else:
+        print(result)
+
+def delete():
+    df = load()
+    name = input("Enter exact Name to delete: ")
+    new_df = df[df["Name"] != name]
+    if len(new_df) == len(df):
+        print("No such contact found.")
+    else:
+        save(new_df)
+        print("Contact deleted.")
+
+reset()
+
+while True:
+    print("\nCONTACT BOOK")
+    print("1. Add")
+    print("2. View")
+    print("3. Search")
+    print("4. Delete")
+    print("5. Exit")
+    ch = input("Choice: ")
+    if ch == '1':
+        add()
+    elif ch == '2':
+        view()
+    elif ch == '3':
+        search()
+    elif ch == '4':
+        delete()
+    elif ch == '5':
+        print("Bye")
+        break
+    else:
+        print("Invalid input")
